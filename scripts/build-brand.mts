@@ -5,6 +5,26 @@ import { fileURLToPath } from 'node:url'
 import { Resvg } from '@resvg/resvg-js'
 import opentype from 'opentype.js'
 
+interface Colors {
+  rabbit: string
+  dock: string
+}
+
+interface LogoColors extends Colors {
+  wordmark: string
+}
+
+interface Drawing {
+  box: number
+  transform?: string
+  rabbit: string[]
+  dock: string[]
+}
+
+interface AppIconDrawing extends Drawing {
+  tile: string
+}
+
 const brandDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'brand')
 const fontPath = join(brandDir, 'fonts', 'InterDisplay-SemiBold.ttf')
 
@@ -16,17 +36,17 @@ const palette = {
   appIconTile: '#262B33',
 }
 
-function mono(color) {
+function mono(color: string): Colors {
   return { rabbit: color, dock: color }
 }
 
-function roundedRect(x, y, w, h, r) {
+function roundedRect(x: number, y: number, w: number, h: number, r: number): string {
   return `M ${x + r} ${y} H ${x + w - r} A ${r} ${r} 0 0 1 ${x + w} ${y + r} V ${y + h - r} A ${r} ${r} 0 0 1 ${x + w - r} ${y + h} H ${x + r} A ${r} ${r} 0 0 1 ${x} ${y + h - r} V ${y + r} A ${r} ${r} 0 0 1 ${x + r} ${y} Z`
 }
 
 // Each drawing has its own size range. The full drawing is used from 32 px up, the small one at
 // 22 and 24 px, and the 16 px drawings sit on whole pixels so their edges stay sharp.
-const FULL = {
+const FULL: Drawing = {
   box: 256,
   transform: 'translate(0 5)',
   rabbit: [
@@ -37,7 +57,7 @@ const FULL = {
   ],
 }
 
-const SMALL = {
+const SMALL: Drawing = {
   box: 256,
   transform: 'translate(0 3)',
   rabbit: [
@@ -49,7 +69,7 @@ const SMALL = {
 }
 
 // In a 16 x 16 grid. The ears step out by one pixel instead of leaning, which a 16 px icon cannot draw.
-const PIXEL16 = {
+const PIXEL16: Drawing = {
   box: 16,
   rabbit: [
     'M 4 4 V 2 A 1 1 0 0 1 6 2 V 4 H 7 V 7 H 5 V 4 Z',
@@ -62,9 +82,17 @@ const PIXEL16 = {
 }
 
 // The app icon carries its own graphite tile, so it reads on light and dark taskbars alike.
-const APP_FULL = { ...FULL, transform: 'translate(128 128) scale(0.72) translate(-128 -123)', tile: roundedRect(8, 8, 240, 240, 52) }
-const APP_SMALL = { ...SMALL, transform: 'translate(128 128) scale(0.74) translate(-128 -125)', tile: roundedRect(0, 0, 256, 256, 56) }
-const APP_PIXEL16 = {
+const APP_FULL: AppIconDrawing = {
+  ...FULL,
+  transform: 'translate(128 128) scale(0.72) translate(-128 -123)',
+  tile: roundedRect(8, 8, 240, 240, 52),
+}
+const APP_SMALL: AppIconDrawing = {
+  ...SMALL,
+  transform: 'translate(128 128) scale(0.74) translate(-128 -125)',
+  tile: roundedRect(0, 0, 256, 256, 56),
+}
+const APP_PIXEL16: AppIconDrawing = {
   box: 16,
   tile: roundedRect(0, 0, 16, 16, 3),
   rabbit: [
@@ -77,7 +105,7 @@ const APP_PIXEL16 = {
   ],
 }
 
-function symbolGroup(drawing, colors) {
+function symbolGroup(drawing: Drawing, colors: Colors): string {
   const attr = drawing.transform ? ` transform="${drawing.transform}"` : ''
   return [
     `  <g${attr}>`,
@@ -87,7 +115,7 @@ function symbolGroup(drawing, colors) {
   ].join('\n')
 }
 
-function svgDocument(width, height, body) {
+function svgDocument(width: number, height: number, body: string): string {
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">`,
     '  <title>RabbitDock</title>',
@@ -97,18 +125,17 @@ function svgDocument(width, height, body) {
   ].join('\n')
 }
 
-function symbolSvg(drawing, colors) {
+function symbolSvg(drawing: Drawing, colors: Colors): string {
   return svgDocument(drawing.box, drawing.box, symbolGroup(drawing, colors))
 }
 
-function appIconSvg(drawing) {
+function appIconSvg(drawing: AppIconDrawing): string {
   const tile = `  <path fill="${palette.appIconTile}" d="${drawing.tile}"/>`
   return svgDocument(drawing.box, drawing.box, [tile, symbolGroup(drawing, palette.dark)].join('\n'))
 }
 
 // The wordmark is set as outlines so the logo files do not need the font installed.
-const fontBytes = await readFile(fontPath)
-const font = opentype.parse(fontBytes.buffer.slice(fontBytes.byteOffset, fontBytes.byteOffset + fontBytes.byteLength))
+const font = opentype.parse(new Uint8Array(await readFile(fontPath)).buffer)
 const FONT_SIZE = 150
 const TRACKING = -0.025 * FONT_SIZE
 const scale = FONT_SIZE / font.unitsPerEm
@@ -116,12 +143,13 @@ const scale = FONT_SIZE / font.unitsPerEm
 // The wordmark needs no substitutions, so each character maps straight to its glyph.
 const glyphs = [...'RabbitDock'].map((char) => font.charToGlyph(char))
 
-function layoutWordmark(originX, baseline) {
+function layoutWordmark(originX: number, baseline: number): { d: string; left: number; right: number } {
   let x = originX
   const paths = glyphs.map((glyph, i) => {
     const path = glyph.getPath(x, baseline, FONT_SIZE)
     x += glyph.advanceWidth * scale
-    if (i < glyphs.length - 1) x += font.getKerningValue(glyph, glyphs[i + 1]) * scale + TRACKING
+    const next = glyphs[i + 1]
+    if (next) x += font.getKerningValue(glyph, next) * scale + TRACKING
     return path
   })
   const boxes = paths.map((p) => p.getBoundingBox())
@@ -138,7 +166,7 @@ const firstPass = layoutWordmark(0, baseline)
 const wordmark = layoutWordmark(236 + 44 - firstPass.left, baseline)
 const logoWidth = Math.ceil(wordmark.right + 20)
 
-function logoSvg(colors) {
+function logoSvg(colors: LogoColors): string {
   return svgDocument(logoWidth, 256, [symbolGroup(FULL, colors), `  <path fill="${colors.wordmark}" d="${wordmark.d}"/>`].join('\n'))
 }
 
@@ -160,10 +188,19 @@ const svgFiles = {
   'rabbitdock-app-icon-16.svg': appIconSvg(APP_PIXEL16),
   'rabbitdock-logo.svg': logoSvg(palette.light),
   'rabbitdock-logo-dark.svg': logoSvg(palette.dark),
-}
+} satisfies Record<string, string>
+
+type SvgName = keyof typeof svgFiles
 
 // For each PNG set, which SVG draws which size.
-const pngSets = [
+interface PngSet {
+  dir: string
+  name: string
+  sizes: number[]
+  pick: (size: number) => SvgName
+}
+
+const pngSets: PngSet[] = [
   { dir: 'symbol', name: 'rabbitdock-symbol', sizes: [16, 24, 32, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-symbol-16.svg' : s <= 24 ? 'rabbitdock-symbol-small.svg' : 'rabbitdock-symbol.svg') },
   { dir: 'symbol-dark', name: 'rabbitdock-symbol-dark', sizes: [16, 24, 32, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-symbol-16-dark.svg' : s <= 24 ? 'rabbitdock-symbol-small-dark.svg' : 'rabbitdock-symbol-dark.svg') },
   { dir: 'app-icon', name: 'rabbitdock-app-icon', sizes: [16, 24, 32, 48, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-app-icon-16.svg' : s <= 24 ? 'rabbitdock-app-icon-small.svg' : 'rabbitdock-app-icon.svg') },

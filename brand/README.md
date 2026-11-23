@@ -51,4 +51,4 @@ with its licence, the SIL Open Font License 1.1.
 ## Regenerating
 
 `npm run brand` rewrites `svg/` and `png/` from the drawings and the palette in
-`scripts/build-brand.mjs`. Change them there, not in the generated files.
+`scripts/build-brand.mts`. Change them there, not in the generated files.

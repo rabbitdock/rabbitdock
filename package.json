@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "./out/main/index.js",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.18.0"
   },
   "scripts": {
     "predev": "install-electron",
@@ -16,7 +16,7 @@
     "prepreview": "install-electron",
     "preview": "electron-vite preview",
     "typecheck": "tsc -b",
-    "brand": "node scripts/build-brand.mjs"
+    "brand": "node scripts/build-brand.mts"
   },
   "devDependencies": {
     "@resvg/resvg-js": "^2.6.2",

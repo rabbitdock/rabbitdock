@@ -12,7 +12,7 @@
 
 ## Development
 
-Requires Node.js 22.12 or later.
+Requires Node.js 22.18 or later.
 
 ```sh
 npm install
