@@ -162,7 +162,7 @@ function layoutWordmark(originX: number, baseline: number): { d: string; left: n
   }
 }
 
-// The symbol's right edge sits at x 236, and its visual centre at y 128.
+// The symbol's right edge sits at x 236, and its visual center at y 128.
 const baseline = 128 + (font.tables.os2.sCapHeight * scale) / 2
 const firstPass = layoutWordmark(0, baseline)
 const wordmark = layoutWordmark(236 + 44 - firstPass.left, baseline)

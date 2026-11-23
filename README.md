@@ -21,7 +21,7 @@ npm run dev
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Starts the app with hot reload |
+| `npm run dev` | Starts the app, with hot reload in the renderer |
 | `npm run build` | Type-checks and builds into `out/` |
 | `npm run typecheck` | Type-checks without building |
 | `npm run brand` | Regenerates the logo and icon files in `brand/` |
