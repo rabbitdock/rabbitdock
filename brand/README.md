@@ -1,0 +1,54 @@
+# RabbitDock brand
+
+The symbol is a rabbit peeking out of a cradle cut into the dock. The gap between the rabbit and the
+dock is part of the drawing, so the symbol also works in a single colour.
+
+## Palette
+
+| Use | Rabbit | Dock and wordmark |
+|---|---|---|
+| On light backgrounds | `#607F9E` | `#262B33` |
+| On dark backgrounds | `#86A0BC` | `#CDD2D9` |
+| Monochrome on light | `#262B33` | `#262B33` |
+| Monochrome on dark | `#E8EBEF` | `#E8EBEF` |
+| App icon, on a `#262B33` tile | `#86A0BC` | `#CDD2D9` |
+
+The colours were chosen against `#FFFFFF` and `#F3F4F6` for light backgrounds and `#111316` for dark
+ones. The app icon carries its own graphite tile, so it reads on light and dark taskbars alike.
+
+## Drawings
+
+The symbol has three drawings, each for a size range.
+
+- **Full**, for 32 px and up.
+- **Small**, for 22 and 24 px, with thicker ears and a wider gap.
+- **16 px**, drawn on the pixel grid so its edges stay sharp. The ears step out by one pixel instead
+  of leaning.
+
+## Files
+
+| File | Use |
+|---|---|
+| `svg/rabbitdock-app-icon.svg`, `-small.svg`, `-16.svg` | App icon on its tile, in the three drawings |
+| `svg/rabbitdock-symbol.svg`, `-small.svg`, `-16.svg` | Colour symbol for light backgrounds |
+| `svg/rabbitdock-symbol-dark.svg`, `-small-dark.svg`, `-16-dark.svg` | Colour symbol for dark backgrounds |
+| `svg/rabbitdock-symbol-mono-on-light.svg`, `-mono-on-dark.svg` | Single colour, full drawing |
+| `svg/rabbitdock-tray-on-light.svg`, `-on-dark.svg`, and their `-16` versions | Single colour, for the system tray |
+| `svg/rabbitdock-logo.svg`, `svg/rabbitdock-logo-dark.svg` | Symbol with the wordmark |
+| `png/app-icon/` | 16, 24, 32, 48, 64, 128, 256 and 512 px |
+| `png/symbol/`, `png/symbol-dark/` | 16, 24, 32, 64, 128, 256 and 512 px |
+| `png/tray/` | 16, 22, 24 and 32 px, on light and on dark |
+
+The tray and symbol PNG files have a transparent background. Each PNG uses the drawing made for its
+size.
+
+## Wordmark
+
+The wordmark is Inter Display SemiBold with -2.5 % tracking, converted to outlines, so the logo files
+do not need the font. The outlines were set without the font's kerning pairs. The font is in `fonts/`
+with its licence, the SIL Open Font License 1.1.
+
+## Regenerating
+
+`npm run brand` rewrites `svg/` and `png/` from the drawings and the palette in
+`scripts/build-brand.mjs`. Change them there, not in the generated files.

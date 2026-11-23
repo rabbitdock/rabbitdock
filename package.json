@@ -14,15 +14,18 @@
     "build": "npm run typecheck && electron-vite build",
     "prepreview": "install-electron",
     "preview": "electron-vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "brand": "node scripts/build-brand.mjs"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.3.0",
     "electron": "^45.4.1",
     "electron-vite": "^6.0.0",
+    "opentype.js": "^2.0.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "typescript": "^7.0.2",
