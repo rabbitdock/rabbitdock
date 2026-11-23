@@ -21,7 +21,6 @@ declare module 'opentype.js' {
     unitsPerEm: number
     tables: { os2: { sCapHeight: number } }
     charToGlyph(char: string): Glyph
-    getKerningValue(left: Glyph, right: Glyph): number
   }
 
   const opentype: {

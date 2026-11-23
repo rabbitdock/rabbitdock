@@ -20,6 +20,3 @@ function createWindow(): void {
 }
 
 void app.whenReady().then(createWindow)
-
-// There is no macOS build, so closing the last window always quits.
-app.on('window-all-closed', () => app.quit())

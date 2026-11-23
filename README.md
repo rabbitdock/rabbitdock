@@ -26,7 +26,7 @@ npm run dev
 | `npm run typecheck` | Type-checks without building |
 | `npm run brand` | Regenerates the logo and icon files in `brand/` |
 
-The first `npm run dev` downloads the Electron binary.
+The first `npm run dev` or `npm run preview` downloads the Electron binary.
 
 ## Stack
 

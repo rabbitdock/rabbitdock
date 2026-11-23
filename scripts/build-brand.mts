@@ -45,7 +45,8 @@ function roundedRect(x: number, y: number, w: number, h: number, r: number): str
 }
 
 // Each drawing has its own size range. The full drawing is used from 32 px up, the small one at
-// 22 and 24 px, and the 16 px drawings sit on whole pixels so their edges stay sharp.
+// 22 and 24 px and for the tray at 32 px, and the 16 px drawings sit on whole pixels so their
+// edges stay sharp.
 const FULL: Drawing = {
   box: 256,
   transform: 'translate(0 5)',
@@ -147,9 +148,10 @@ function layoutWordmark(originX: number, baseline: number): { d: string; left: n
   let x = originX
   const paths = glyphs.map((glyph, i) => {
     const path = glyph.getPath(x, baseline, FONT_SIZE)
+    // Letters are spaced by their advance width and the tracking. Kerning is left out, as
+    // brand/README.md says.
     x += glyph.advanceWidth * scale
-    const next = glyphs[i + 1]
-    if (next) x += font.getKerningValue(glyph, next) * scale + TRACKING
+    if (i < glyphs.length - 1) x += TRACKING
     return path
   })
   const boxes = paths.map((p) => p.getBoundingBox())
