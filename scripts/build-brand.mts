@@ -1,5 +1,5 @@
 // Generates the SVG and PNG files in brand/ from the drawings below. Run it with `npm run brand`.
-import { mkdir, readFile, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Resvg } from '@resvg/resvg-js'
@@ -209,6 +209,11 @@ const pngSets: PngSet[] = [
   { dir: 'tray', name: 'rabbitdock-tray-on-light', sizes: [16, 22, 24, 32], pick: (s) => (s === 16 ? 'rabbitdock-tray-on-light-16.svg' : 'rabbitdock-tray-on-light.svg') },
   { dir: 'tray', name: 'rabbitdock-tray-on-dark', sizes: [16, 22, 24, 32], pick: (s) => (s === 16 ? 'rabbitdock-tray-on-dark-16.svg' : 'rabbitdock-tray-on-dark.svg') },
 ]
+
+// Start from empty folders, so a file the script no longer makes shows up as deleted in git
+// instead of lingering in brand/.
+await rm(join(brandDir, 'svg'), { recursive: true, force: true })
+await rm(join(brandDir, 'png'), { recursive: true, force: true })
 
 await mkdir(join(brandDir, 'svg'), { recursive: true })
 for (const [name, svg] of Object.entries(svgFiles)) {
