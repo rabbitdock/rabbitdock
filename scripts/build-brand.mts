@@ -1,4 +1,5 @@
 // Generates the SVG and PNG files in brand/ from the drawings below. Run it with `npm run brand`.
+// The drawings are not under the MIT license, see the License section of brand/README.md.
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'

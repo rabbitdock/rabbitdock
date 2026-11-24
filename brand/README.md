@@ -45,11 +45,18 @@ size.
 
 ## Wordmark
 
-The wordmark is Inter Display SemiBold with -2.5 % tracking, converted to outlines, so the logo files
-do not need the font. The outlines were set without the font's kerning pairs. The font is in `fonts/`
-with its license, the SIL Open Font License 1.1.
+The wordmark is Inter Display SemiBold with -2.5% tracking, converted to outlines, so the logo files
+do not need the font. The outlines were set without the font's kerning pairs. The font is in `fonts/`.
 
 ## Regenerating
 
 `npm run brand` deletes `svg/` and `png/` and generates them again from the drawings and the
 palette in `scripts/build-brand.mts`. Change them there, not in the generated files.
+
+## License
+
+The code in this repository is under the MIT license. The RabbitDock name, the logo and the icons in
+this folder are not covered by it, and neither are the drawings in `scripts/build-brand.mts` that
+generate them. You may use them to refer to RabbitDock, but not as the name or logo of another
+project. The Inter font in `fonts/` is under the SIL Open Font License 1.1, in
+`fonts/LICENSE-Inter.txt`.

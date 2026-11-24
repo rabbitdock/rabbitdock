@@ -21,8 +21,9 @@ npm run dev
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Starts the app, with hot reload in the renderer |
+| `npm run dev` | Starts the app, with HMR in the renderer |
 | `npm run build` | Type-checks and builds into `out/` |
+| `npm run preview` | Builds the app and starts the built version |
 | `npm run typecheck` | Type-checks without building |
 | `npm run brand` | Regenerates the logo and icon files in `brand/` |
 
@@ -34,4 +35,5 @@ Electron, React and TypeScript, built with electron-vite.
 
 ## License
 
-MIT, see [LICENSE](LICENSE). The brand files are described in [brand/README.md](brand/README.md).
+MIT, see [LICENSE](LICENSE). The RabbitDock name, logo and icons are not covered by it, see
+[brand/README.md](brand/README.md).
