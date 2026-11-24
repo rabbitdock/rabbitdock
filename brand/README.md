@@ -32,7 +32,7 @@ The symbol has three drawings, each for a size range.
 |---|---|
 | `svg/rabbitdock-app-icon.svg`, `-small.svg`, `-16.svg` | App icon on its tile, in the three drawings |
 | `svg/rabbitdock-symbol.svg`, `-small.svg`, `-16.svg` | Color symbol for light backgrounds |
-| `svg/rabbitdock-symbol-dark.svg`, `-small-dark.svg`, `-16-dark.svg` | Color symbol for dark backgrounds |
+| `svg/rabbitdock-symbol-dark.svg`, `-dark-small.svg`, `-dark-16.svg` | Color symbol for dark backgrounds |
 | `svg/rabbitdock-symbol-mono-on-light.svg`, `-mono-on-dark.svg` | Single color, full drawing |
 | `svg/rabbitdock-tray-on-light.svg`, `-on-dark.svg`, and their `-16` versions | Single color, for the system tray |
 | `svg/rabbitdock-logo.svg`, `svg/rabbitdock-logo-dark.svg` | Symbol with the wordmark |

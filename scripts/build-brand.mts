@@ -177,8 +177,8 @@ const svgFiles = {
   'rabbitdock-symbol-small.svg': symbolSvg(SMALL, palette.light),
   'rabbitdock-symbol-16.svg': symbolSvg(PIXEL16, palette.light),
   'rabbitdock-symbol-dark.svg': symbolSvg(FULL, palette.dark),
-  'rabbitdock-symbol-small-dark.svg': symbolSvg(SMALL, palette.dark),
-  'rabbitdock-symbol-16-dark.svg': symbolSvg(PIXEL16, palette.dark),
+  'rabbitdock-symbol-dark-small.svg': symbolSvg(SMALL, palette.dark),
+  'rabbitdock-symbol-dark-16.svg': symbolSvg(PIXEL16, palette.dark),
   'rabbitdock-symbol-mono-on-light.svg': symbolSvg(FULL, mono(palette.monoOnLight)),
   'rabbitdock-symbol-mono-on-dark.svg': symbolSvg(FULL, mono(palette.monoOnDark)),
   'rabbitdock-tray-on-light.svg': symbolSvg(SMALL, mono(palette.monoOnLight)),
@@ -204,7 +204,7 @@ interface PngSet {
 
 const pngSets: PngSet[] = [
   { dir: 'symbol', name: 'rabbitdock-symbol', sizes: [16, 24, 32, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-symbol-16.svg' : s <= 24 ? 'rabbitdock-symbol-small.svg' : 'rabbitdock-symbol.svg') },
-  { dir: 'symbol-dark', name: 'rabbitdock-symbol-dark', sizes: [16, 24, 32, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-symbol-16-dark.svg' : s <= 24 ? 'rabbitdock-symbol-small-dark.svg' : 'rabbitdock-symbol-dark.svg') },
+  { dir: 'symbol-dark', name: 'rabbitdock-symbol-dark', sizes: [16, 24, 32, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-symbol-dark-16.svg' : s <= 24 ? 'rabbitdock-symbol-dark-small.svg' : 'rabbitdock-symbol-dark.svg') },
   { dir: 'app-icon', name: 'rabbitdock-app-icon', sizes: [16, 24, 32, 48, 64, 128, 256, 512], pick: (s) => (s === 16 ? 'rabbitdock-app-icon-16.svg' : s <= 24 ? 'rabbitdock-app-icon-small.svg' : 'rabbitdock-app-icon.svg') },
   { dir: 'tray', name: 'rabbitdock-tray-on-light', sizes: [16, 22, 24, 32], pick: (s) => (s === 16 ? 'rabbitdock-tray-on-light-16.svg' : 'rabbitdock-tray-on-light.svg') },
   { dir: 'tray', name: 'rabbitdock-tray-on-dark', sizes: [16, 22, 24, 32], pick: (s) => (s === 16 ? 'rabbitdock-tray-on-dark-16.svg' : 'rabbitdock-tray-on-dark.svg') },
