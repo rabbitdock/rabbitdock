@@ -9,14 +9,13 @@ function createWindow(): void {
     })
 
     // In dev, electron-vite serves the renderer with HMR and passes its URL in this variable.
+    // Electron already logs a load that fails, so the returned promise is left alone.
     const devServerUrl = process.env['ELECTRON_RENDERER_URL']
-    const loading =
-        !app.isPackaged && devServerUrl
-            ? window.loadURL(devServerUrl)
-            : window.loadFile(join(__dirname, '../renderer/index.html'))
-
-    // Without this, a missing build or a stopped dev server is just a blank window.
-    loading.catch((error: unknown) => console.error('Failed to load the renderer:', error))
+    if (!app.isPackaged && devServerUrl) {
+        void window.loadURL(devServerUrl)
+    } else {
+        void window.loadFile(join(__dirname, '../renderer/index.html'))
+    }
 }
 
 void app.whenReady().then(createWindow)
