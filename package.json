@@ -14,9 +14,11 @@
     "build": "npm run typecheck && electron-vite build",
     "preview": "install-electron && electron-vite preview",
     "typecheck": "tsc -b",
+    "test:smoke": "install-electron && playwright test",
     "brand": "node scripts/build-brand.mts"
   },
   "devDependencies": {
+    "@playwright/test": "^1.65.1",
     "@resvg/resvg-js": "^2.6.2",
     "@types/node": "^24.19.2",
     "@types/react": "^19.3.0",

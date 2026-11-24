@@ -25,9 +25,10 @@ npm run dev
 | `npm run build` | Type-checks and builds into `out/` |
 | `npm run preview` | Builds the app and starts the built version |
 | `npm run typecheck` | Type-checks without building |
+| `npm run test:smoke` | Opens the built app and checks that its window loads. Run `npm run build` first |
 | `npm run brand` | Regenerates the logo and icon files in `brand/` |
 
-The first `npm run dev` or `npm run preview` downloads the Electron binary.
+The first command that starts the app downloads the Electron binary.
 
 ## Stack
 
