@@ -10,11 +10,9 @@
     "node": ">=26"
   },
   "scripts": {
-    "predev": "install-electron",
-    "dev": "electron-vite dev",
+    "dev": "install-electron && electron-vite dev",
     "build": "npm run typecheck && electron-vite build",
-    "prepreview": "install-electron",
-    "preview": "electron-vite preview",
+    "preview": "install-electron && electron-vite preview",
     "typecheck": "tsc -b",
     "brand": "node scripts/build-brand.mts"
   },
