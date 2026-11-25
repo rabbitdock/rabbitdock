@@ -22,9 +22,9 @@ The symbol has three drawings, each for a size range.
 
 - **Full**, for 32 px and up.
 - **Small**, for 22 and 24 px, with thicker ears and a wider gap. The tray icons use it at 32 px
-  too, since a tray icon stays small on screen.
+    too, since a tray icon stays small on screen.
 - **16 px**, drawn on the pixel grid so its edges stay sharp. The ears step out by one pixel instead
-  of leaning.
+    of leaning.
 
 ## Files
 

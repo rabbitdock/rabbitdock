@@ -1,8 +1,8 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="brand/svg/rabbitdock-logo-dark.svg">
-    <img src="brand/svg/rabbitdock-logo.svg" alt="RabbitDock" width="360">
-  </picture>
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="brand/svg/rabbitdock-logo-dark.svg">
+        <img src="brand/svg/rabbitdock-logo.svg" alt="RabbitDock" width="360">
+    </picture>
 </p>
 
 <p align="center">A modular desktop app for Windows and Linux.</p>
