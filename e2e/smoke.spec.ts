@@ -1,8 +1,10 @@
-import { _electron as electron, expect, test } from '@playwright/test'
+import { _electron as electron, expect, test, type TestInfo } from '@playwright/test'
+
+const APP_URL = 'rabbitdock://app/index.html'
 
 // Opens the built app from out/, so run `npm run build` first.
-test('the app opens its window and renders the page', async ({}, testInfo) => {
-    const app = await electron.launch({
+function launchApp(testInfo: TestInfo) {
+    return electron.launch({
         // A throwaway profile under test-results, so the test never touches the real one.
         args: ['.', `--user-data-dir=${testInfo.outputPath('user-data')}`],
         // The app loads ELECTRON_RENDERER_URL when it is set, so clear it to test the built files.
@@ -11,10 +13,55 @@ test('the app opens its window and renders the page', async ({}, testInfo) => {
         // The app runs with the sandbox on, so the test does too.
         chromiumSandbox: true,
     })
+}
+
+test('the app opens its window and renders the page', async ({}, testInfo) => {
+    const app = await launchApp(testInfo)
     try {
         const window = await app.firstWindow()
+        await expect(window).toHaveURL(APP_URL)
         await expect(window).toHaveTitle('RabbitDock')
         await expect(window.getByRole('heading', { name: 'RabbitDock' })).toBeVisible()
+
+        // A resource the Content-Security-Policy blocks only shows up as a console error.
+        const errors = (await window.consoleMessages()).filter((message) => message.type() === 'error')
+        expect(errors.map((message) => message.text())).toEqual([])
+        expect(await window.pageErrors()).toEqual([])
+    } finally {
+        await app.close()
+    }
+})
+
+// The checks run inside the page, so they are passed as strings rather than typed as Node code.
+test('the page cannot leave the app or reach the system', async ({}, testInfo) => {
+    const app = await launchApp(testInfo)
+    try {
+        const window = await app.firstWindow()
+        await expect(window).toHaveURL(APP_URL)
+
+        expect(await window.evaluate('typeof process')).toBe('undefined')
+        expect(await window.evaluate('window.open("https://example.com/") === null')).toBe(true)
+        expect(await window.evaluate('import("data:text/javascript,").then(() => "loaded", () => "blocked")')).toBe('blocked')
+        expect(await window.evaluate('navigator.permissions.query({ name: "geolocation" }).then((s) => s.state)')).toBe('denied')
+        expect(await window.evaluate('Notification.requestPermission()')).toBe('denied')
+
+        // The protocol refuses a path that leaves out/renderer. The slash is encoded so the URL keeps
+        // it on Windows and on Linux.
+        const escaped = await app.evaluate(({ net }) =>
+            net.fetch('rabbitdock://app/..%2F..%2Fpackage.json').then(() => 'served', () => 'refused'),
+        )
+        expect(escaped).toBe('refused')
+
+        // Another host on the app's own scheme is refused too, and it answers without the network.
+        // The navigation starts in the page, and the main process reads where it ended.
+        const landed = await app.evaluate(({ BrowserWindow }) => {
+            const contents = BrowserWindow.getAllWindows()[0]!.webContents
+            const stopped = new Promise<string>((resolve) => contents.once('did-stop-loading', () => resolve(contents.getURL())))
+            contents.executeJavaScript('location.href = "rabbitdock://other/index.html"').catch(() => {})
+            return stopped
+        })
+        expect(landed).toBe(APP_URL)
+        expect(await window.evaluate('document.querySelector("h1")?.textContent')).toBe('RabbitDock')
     } finally {
         await app.close()
     }
