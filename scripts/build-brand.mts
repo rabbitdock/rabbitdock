@@ -1,8 +1,7 @@
 // Generates the SVG and PNG files in brand/ from the drawings below. Run it with `npm run brand`.
 // The drawings are not under the MIT license, see the License section of brand/README.md.
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { join } from 'node:path'
 import { Resvg } from '@resvg/resvg-js'
 import opentype from 'opentype.js'
 
@@ -26,7 +25,7 @@ interface AppIconDrawing extends Drawing {
     tile: string
 }
 
-const brandDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'brand')
+const brandDir = join(import.meta.dirname, '..', 'brand')
 const fontPath = join(brandDir, 'fonts', 'InterDisplay-SemiBold.ttf')
 
 const palette = {

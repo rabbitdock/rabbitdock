@@ -5,7 +5,6 @@ function createWindow(): void {
     const window = new BrowserWindow({
         width: 1200,
         height: 800,
-        title: 'RabbitDock',
     })
 
     // In dev, electron-vite serves the renderer with HMR and passes its URL in this variable.
