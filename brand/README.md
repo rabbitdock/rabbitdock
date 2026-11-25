@@ -14,7 +14,9 @@ dock is part of the drawing, so the symbol also works in a single color.
 | App icon, on a `#262B33` tile | `#86A0BC` | `#CDD2D9` |
 
 The colors were chosen against `#FFFFFF` and `#F3F4F6` for light backgrounds and `#111316` for dark
-ones. The app icon carries its own graphite tile, so it reads on light and dark taskbars alike.
+ones. The app icon carries its own graphite tile, so it reads on light and dark taskbars alike. The
+tile fills the whole square at 16 and 24 px, to give the symbol every pixel, and keeps a small
+transparent margin from 32 px up.
 
 ## Drawings
 

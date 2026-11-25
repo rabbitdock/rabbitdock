@@ -36,5 +36,6 @@ Electron, React and TypeScript, built with electron-vite.
 
 ## License
 
-MIT, see [LICENSE](LICENSE). The RabbitDock name, logo and icons are not covered by it, see
+MIT, see [LICENSE](LICENSE). The RabbitDock name, logo, icons and the drawings that generate them
+are not covered by it, and the Inter font is under the SIL Open Font License. See
 [brand/README.md](brand/README.md).
