@@ -18,3 +18,12 @@ jobs:
                   node-version: 26
             - run: npm ci
             - run: npm run build
+            - run: npm run test:smoke
+              if: runner.os == 'Windows'
+            # Ubuntu 24.04 and later use AppArmor to block the user namespaces that Chromium's sandbox
+            # needs when Electron runs from node_modules. This lifts that block instead of turning the
+            # sandbox off, and xvfb-run gives the runner a display.
+            - run: |
+                  sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+                  xvfb-run -a npm run test:smoke
+              if: runner.os == 'Linux'
