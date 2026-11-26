@@ -1,0 +1,27 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    // Listing plugins replaces the default set, so the defaults are listed along with react.
+    "plugins": ["eslint", "typescript", "unicorn", "oxc", "react"],
+    "categories": {
+        "correctness": "error"
+    },
+    "rules": {
+        // Oxlint files this rule as pedantic, which is off by default, but a hook called inside a
+        // condition or a loop breaks the state React keeps for the component.
+        "react/rules-of-hooks": "error",
+        // The correctness category also turns on these React Compiler rules, which Oxlint marks as
+        // experimental. The app does not use the React Compiler.
+        "react/error-boundaries": "off",
+        "react/globals": "off",
+        "react/immutability": "off",
+        "react/incompatible-library": "off",
+        "react/preserve-manual-memoization": "off",
+        "react/purity": "off",
+        "react/refs": "off",
+        "react/set-state-in-effect": "off",
+        "react/set-state-in-render": "off",
+        "react/static-components": "off",
+        "react/use-memo": "off",
+        "react/void-use-memo": "off"
+    }
+}

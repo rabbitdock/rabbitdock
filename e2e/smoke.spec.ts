@@ -1,4 +1,4 @@
-import { _electron as electron, expect, test, type TestInfo } from '@playwright/test'
+import { _electron as electron, expect, test } from '@playwright/test'
 
 const APP_URL = 'rabbitdock://app/index.html'
 
@@ -8,11 +8,11 @@ const APP_URL = 'rabbitdock://app/index.html'
 // break this mode.
 const packagedApp = process.env['RABBITDOCK_EXECUTABLE']
 
-function launchApp(testInfo: TestInfo) {
+function launchApp() {
     return electron.launch({
         ...(packagedApp ? { executablePath: packagedApp } : {}),
         // A throwaway profile under test-results, so the test never touches the real one.
-        args: [...(packagedApp ? [] : ['.']), `--user-data-dir=${testInfo.outputPath('user-data')}`],
+        args: [...(packagedApp ? [] : ['.']), `--user-data-dir=${test.info().outputPath('user-data')}`],
         // The app loads ELECTRON_RENDERER_URL when it is set, so clear it to test the built files.
         env: { ...process.env, ELECTRON_RENDERER_URL: '' } as Record<string, string>,
         // On Linux, Playwright starts Electron with --no-sandbox unless chromiumSandbox is set.
@@ -21,8 +21,8 @@ function launchApp(testInfo: TestInfo) {
     })
 }
 
-test('the app opens its window and renders the page', async ({}, testInfo) => {
-    const app = await launchApp(testInfo)
+test('the app opens its window and renders the page', async () => {
+    const app = await launchApp()
     try {
         const window = await app.firstWindow()
         await expect(window).toHaveURL(APP_URL)
@@ -39,8 +39,8 @@ test('the app opens its window and renders the page', async ({}, testInfo) => {
 })
 
 // The checks run inside the page, so they are passed as strings rather than typed as Node code.
-test('the page cannot leave the app or reach the system', async ({}, testInfo) => {
-    const app = await launchApp(testInfo)
+test('the page cannot leave the app or reach the system', async () => {
+    const app = await launchApp()
     try {
         const window = await app.firstWindow()
         await expect(window).toHaveURL(APP_URL)

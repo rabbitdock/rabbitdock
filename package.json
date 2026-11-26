@@ -16,6 +16,7 @@
         "build": "npm run typecheck && electron-vite build",
         "preview": "install-electron && electron-vite preview",
         "typecheck": "tsc -b",
+        "lint": "oxlint",
         "test:smoke": "install-electron && playwright test",
         "dist": "npm run build && electron-builder --publish never",
         "brand": "node scripts/build-brand.mts"
@@ -31,6 +32,7 @@
         "electron-builder": "^26.18.0",
         "electron-vite": "^6.0.0",
         "opentype.js": "^2.0.0",
+        "oxlint": "^1.95.0",
         "react": "^19.3.1",
         "react-dom": "^19.3.1",
         "typescript": "^7.0.2",
