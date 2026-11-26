@@ -26,9 +26,12 @@ npm run dev
 | `npm run preview` | Builds the app and starts the built version |
 | `npm run typecheck` | Type-checks without building |
 | `npm run test:smoke` | Opens the built app and checks that its window loads and stays locked down. Run `npm run build` first |
+| `npm run dist` | Builds and packages the app for the current system into `dist/`, as an installer on Windows and an AppImage on Linux |
 | `npm run brand` | Regenerates the logo and icon files in `brand/` |
 
-The first command that starts the app downloads the Electron binary.
+The first command that starts the app downloads the Electron binary. To run the smoke test against
+the packaged app, set `RABBITDOCK_EXECUTABLE` to its executable, such as
+`dist/win-unpacked/RabbitDock.exe`.
 
 ## Stack
 

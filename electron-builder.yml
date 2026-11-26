@@ -1,0 +1,21 @@
+appId: io.github.rabbitdock.rabbitdock
+directories:
+    output: dist
+files:
+    - out/**
+# The app has no auto-update, so the package leaves out app-update.yml.
+publish: null
+toolsets:
+    # The default AppImage runtime needs FUSE 2, which recent distributions no longer install, and
+    # starts the app from its menu entry with --no-sandbox.
+    appimage: "1.0.3"
+win:
+    target: nsis
+    icon: brand/ico/rabbitdock-app-icon.ico
+linux:
+    target: AppImage
+    icon: brand/png/app-icon-linux
+    executableName: rabbitdock
+    # Names the .desktop file after desktopName, so it matches the app_id of the window.
+    syncDesktopName: true
+    category: Utility

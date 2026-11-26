@@ -1,5 +1,6 @@
-// Generates the SVG and PNG files in brand/ from the drawings below. Run it with `npm run brand`.
-// The drawings are not under the MIT license, see the License section of brand/README.md.
+// Generates the SVG, PNG and ICO files in brand/ from the drawings below. Run it with
+// `npm run brand`. The drawings are not under the MIT license, see the License section of
+// brand/README.md.
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { Resvg } from '@resvg/resvg-js'
@@ -214,20 +215,60 @@ const pngSets: PngSet[] = [
 // instead of lingering in brand/.
 await rm(join(brandDir, 'svg'), { recursive: true, force: true })
 await rm(join(brandDir, 'png'), { recursive: true, force: true })
+await rm(join(brandDir, 'ico'), { recursive: true, force: true })
 
 await mkdir(join(brandDir, 'svg'), { recursive: true })
 for (const [name, svg] of Object.entries(svgFiles)) {
     await writeFile(join(brandDir, 'svg', name), svg)
 }
 
+const appIconPngs = new Map<number, Buffer>()
 let pngCount = 0
 for (const set of pngSets) {
     await mkdir(join(brandDir, 'png', set.dir), { recursive: true })
     for (const size of set.sizes) {
         const png = new Resvg(svgFiles[set.pick(size)], { fitTo: { mode: 'width', value: size } }).render().asPng()
         await writeFile(join(brandDir, 'png', set.dir, `${set.name}-${size}.png`), png)
+        if (set.dir === 'app-icon') appIconPngs.set(size, png)
         pngCount += 1
     }
 }
 
-console.log(`Wrote ${Object.keys(svgFiles).length} SVG and ${pngCount} PNG files to ${brandDir}`)
+// electron-builder takes a folder as the Linux icon only when each PNG in it is named after its
+// size, such as 16x16.png, so the app icon PNGs are written again under those names.
+await mkdir(join(brandDir, 'png', 'app-icon-linux'), { recursive: true })
+for (const [size, png] of appIconPngs) {
+    await writeFile(join(brandDir, 'png', 'app-icon-linux', `${size}x${size}.png`), png)
+    pngCount += 1
+}
+
+// Windows takes the app icon as an .ico. Building it from the PNGs above keeps the drawings made for
+// 16 and 24 px, which a conversion from one large image would lose.
+function icoFile(images: { size: number; png: Buffer }[]): Buffer {
+    const header = Buffer.alloc(6)
+    header.writeUInt16LE(1, 2) // image type, 1 for an icon
+    header.writeUInt16LE(images.length, 4)
+    let offset = header.length + 16 * images.length
+    const entries = images.map(({ size, png }) => {
+        const entry = Buffer.alloc(16)
+        entry.writeUInt8(size % 256, 0) // width, where 0 means 256
+        entry.writeUInt8(size % 256, 1) // height, where 0 means 256
+        entry.writeUInt16LE(1, 4) // color planes
+        entry.writeUInt16LE(32, 6) // bits per pixel
+        entry.writeUInt32LE(png.length, 8)
+        entry.writeUInt32LE(offset, 12)
+        offset += png.length
+        return entry
+    })
+    return Buffer.concat([header, ...entries, ...images.map((image) => image.png)])
+}
+
+const icoImages = [16, 24, 32, 48, 64, 128, 256].map((size) => {
+    const png = appIconPngs.get(size)
+    if (!png) throw new Error(`no ${size} px app icon to put in the .ico`)
+    return { size, png }
+})
+await mkdir(join(brandDir, 'ico'), { recursive: true })
+await writeFile(join(brandDir, 'ico', 'rabbitdock-app-icon.ico'), icoFile(icoImages))
+
+console.log(`Wrote ${Object.keys(svgFiles).length} SVG files, ${pngCount} PNG files and 1 ICO file to ${brandDir}`)

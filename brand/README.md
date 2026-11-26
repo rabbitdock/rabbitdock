@@ -39,8 +39,10 @@ The symbol has three drawings, each for a size range.
 | `svg/rabbitdock-tray-on-light.svg`, `-on-dark.svg`, and their `-16` versions | Single color, for the system tray |
 | `svg/rabbitdock-logo.svg`, `svg/rabbitdock-logo-dark.svg` | Symbol with the wordmark |
 | `png/app-icon/` | 16, 24, 32, 48, 64, 128, 256 and 512 px |
+| `png/app-icon-linux/` | The same images as `png/app-icon/`, named `16x16.png` to `512x512.png` for the Linux package |
 | `png/symbol/`, `png/symbol-dark/` | 16, 24, 32, 64, 128, 256 and 512 px |
 | `png/tray/` | 16, 22, 24 and 32 px, on light and on dark |
+| `ico/rabbitdock-app-icon.ico` | App icon for Windows, holding the 16 to 256 px PNGs of `png/app-icon/` |
 
 The tray and symbol PNG files have a transparent background. Each PNG uses the drawing made for its
 size.
@@ -52,8 +54,8 @@ do not need the font. The outlines were set without the font's kerning pairs. Th
 
 ## Regenerating
 
-`npm run brand` deletes `svg/` and `png/` and generates them again from the drawings and the
-palette in `scripts/build-brand.mts`. Change them there, not in the generated files.
+`npm run brand` deletes `svg/`, `png/` and `ico/` and generates them again from the drawings and
+the palette in `scripts/build-brand.mts`. Change them there, not in the generated files.
 
 ## License
 

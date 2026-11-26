@@ -2,11 +2,17 @@ import { _electron as electron, expect, test, type TestInfo } from '@playwright/
 
 const APP_URL = 'rabbitdock://app/index.html'
 
-// Opens the built app from out/, so run `npm run build` first.
+// Opens the built app from out/, so run `npm run build` first. With RABBITDOCK_EXECUTABLE set to a
+// packaged app, such as dist/win-unpacked/RabbitDock.exe, it opens that app instead. Playwright
+// drives Electron through --inspect, so turning off the EnableNodeCliInspectArguments fuse would
+// break this mode.
+const packagedApp = process.env['RABBITDOCK_EXECUTABLE']
+
 function launchApp(testInfo: TestInfo) {
     return electron.launch({
+        ...(packagedApp ? { executablePath: packagedApp } : {}),
         // A throwaway profile under test-results, so the test never touches the real one.
-        args: ['.', `--user-data-dir=${testInfo.outputPath('user-data')}`],
+        args: [...(packagedApp ? [] : ['.']), `--user-data-dir=${testInfo.outputPath('user-data')}`],
         // The app loads ELECTRON_RENDERER_URL when it is set, so clear it to test the built files.
         env: { ...process.env, ELECTRON_RENDERER_URL: '' } as Record<string, string>,
         // On Linux, Playwright starts Electron with --no-sandbox unless chromiumSandbox is set.
