@@ -21,9 +21,30 @@ jobs:
             - run: npm run test:smoke
               if: runner.os == 'Windows'
             # Ubuntu 24.04 and later use AppArmor to block the user namespaces that Chromium's sandbox
-            # needs when Electron runs from node_modules. This lifts that block instead of turning the
-            # sandbox off, and xvfb-run gives the runner a display.
+            # needs when Electron runs from node_modules or from the extracted AppImage. This lifts that
+            # block instead of turning the sandbox off, and xvfb-run gives the runner a display. The
+            # smoke test of the AppImage below needs the same sysctl.
             - run: |
                   sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
                   xvfb-run -a npm run test:smoke
               if: runner.os == 'Linux'
+            - run: npx electron-builder --publish never
+            - run: npm run test:smoke
+              if: runner.os == 'Windows'
+              env:
+                  RABBITDOCK_EXECUTABLE: ${{ github.workspace }}/dist/win-unpacked/RabbitDock.exe
+            # Running the AppImage would need FUSE on the runner. Extracting it still goes through its
+            # runtime, and AppRun starts the app with the same launcher script and libraries.
+            - run: |
+                  dist/*.AppImage --appimage-extract
+                  xvfb-run -a npm run test:smoke
+              if: runner.os == 'Linux'
+              env:
+                  RABBITDOCK_EXECUTABLE: ${{ github.workspace }}/squashfs-root/AppRun
+            - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+              with:
+                  name: rabbitdock-${{ runner.os }}
+                  path: |
+                      dist/*.exe
+                      dist/*.AppImage
+                  if-no-files-found: error
