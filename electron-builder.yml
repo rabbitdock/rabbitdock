@@ -4,6 +4,7 @@ directories:
 files:
     # Only the app itself. Modules are built into out/modules and installed separately.
     - out/main/**
+    - out/preload/**
     - out/renderer/**
 # The app has no auto-update, so the package leaves out app-update.yml.
 publish: null

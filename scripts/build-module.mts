@@ -2,13 +2,18 @@
 //     node scripts/build-module.mts <module folder>
 //
 // A module uses the app's React instead of bundling its own, because hooks break when a page runs
-// two copies of React. Its imports of react and react/jsx-runtime resolve to generated modules that
-// read the app's copy from globalThis.__rabbitdockHost, which the app sets before it loads modules.
+// two copies of React. Its imports of react, react/jsx-runtime and react-dom resolve to generated
+// modules that read the app's copy from globalThis.__rabbitdockHost, which src/renderer/src/host.ts
+// sets before the app loads any module.
+//
+// A module cannot bring CSS or other assets yet. The app loads only index.js, and library mode
+// inlines imported images and fonts as `data:` URLs, which the Content-Security-Policy blocks.
 import { copyFile, readFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { join, resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
 import { build, type Plugin } from 'vite'
+import { parseManifest } from '../src/main/module-manifest.mts'
 
 const HOST_GLOBAL = '__rabbitdockHost'
 
@@ -16,6 +21,7 @@ const HOST_GLOBAL = '__rabbitdockHost'
 const SHARED_PACKAGES: Record<string, string> = {
     react: 'react',
     'react/jsx-runtime': 'jsxRuntime',
+    'react-dom': 'reactDom',
 }
 
 const require = createRequire(import.meta.url)
@@ -49,11 +55,8 @@ function sharedPackages(): Plugin {
 const [folder] = process.argv.slice(2)
 if (!folder) throw new Error('Usage: node scripts/build-module.mts <module folder>')
 const moduleDir = resolve(folder)
-const manifest = JSON.parse(await readFile(join(moduleDir, 'manifest.json'), 'utf8')) as { id?: unknown }
-// The id becomes a folder name, so it cannot hold anything that would leave out/modules.
-if (typeof manifest.id !== 'string' || !/^[a-z][a-z0-9-]*$/.test(manifest.id)) {
-    throw new Error(`${moduleDir}: the manifest id must be lowercase letters, digits and hyphens`)
-}
+// The same check the app runs, so a module that builds also loads.
+const manifest = parseManifest(JSON.parse(await readFile(join(moduleDir, 'manifest.json'), 'utf8')))
 const outDir = resolve('out', 'modules', manifest.id)
 
 await build({

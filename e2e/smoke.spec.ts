@@ -51,6 +51,8 @@ test('the page cannot leave the app or reach the system', async () => {
     try {
         const window = await app.firstWindow()
         await expect(window).toHaveURL(APP_URL)
+        // The shell renders once the main process sends the list of modules.
+        await expect(window.getByRole('heading', { name: 'RabbitDock' })).toBeVisible()
 
         expect(await window.evaluate('typeof process')).toBe('undefined')
         expect(await window.evaluate('window.open("https://example.com/") === null')).toBe(true)

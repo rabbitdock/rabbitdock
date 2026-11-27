@@ -17,12 +17,42 @@
     font-weight: 600;
 }
 
-.content {
+.moduleList {
     display: grid;
-    place-items: center;
+    gap: 2px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.moduleButton {
+    width: 100%;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+}
+
+.moduleButton:hover {
+    background: var(--hover-background);
+}
+
+.moduleButton[aria-current='page'] {
+    background: var(--selected-background);
+    font-weight: 600;
+}
+
+.content {
     overflow: auto;
 }
 
-.empty {
+.placeholder {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    margin: 0;
     color: var(--text-muted);
 }
