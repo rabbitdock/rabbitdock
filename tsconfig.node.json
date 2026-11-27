@@ -11,5 +11,6 @@
         "isolatedModules": true,
         "skipLibCheck": true
     },
-    "include": ["electron.vite.config.ts", "playwright.config.ts", "src/main/**/*", "scripts/**/*", "e2e/**/*"]
+    "include": ["electron.vite.config.ts", "playwright.config.ts", "src/main/**/*", "scripts/**/*", "e2e/**/*"],
+    "exclude": ["e2e/fixtures/modules/*/src/**/*"]
 }

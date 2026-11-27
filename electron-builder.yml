@@ -2,7 +2,9 @@ appId: io.github.rabbitdock.rabbitdock
 directories:
     output: dist
 files:
-    - out/**
+    # Only the app itself. Modules are built into out/modules and installed separately.
+    - out/main/**
+    - out/renderer/**
 # The app has no auto-update, so the package leaves out app-update.yml.
 publish: null
 toolsets:

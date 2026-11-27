@@ -23,6 +23,7 @@ npm run dev
 |---|---|
 | `npm run dev` | Starts the app, with HMR in the renderer |
 | `npm run build` | Type-checks and builds into `out/` |
+| `npm run build:module -- <folder>` | Builds the module in that folder into `out/modules/<id>/`, apart from the app |
 | `npm run preview` | Builds the app and starts the built version |
 | `npm run typecheck` | Type-checks without building |
 | `npm run lint` | Checks the code with Oxlint |
