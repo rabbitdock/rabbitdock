@@ -1,4 +1,11 @@
 {
+    // The shadcn CLI reads the @ alias from this file. The renderer's own copy is in
+    // tsconfig.web.json, and electron.vite.config.ts resolves it for the build.
+    "compilerOptions": {
+        "paths": {
+            "@/*": ["./src/renderer/src/*"]
+        }
+    },
     "files": [],
     "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }, { "path": "./tsconfig.modules.json" }]
 }

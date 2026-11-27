@@ -10,7 +10,10 @@
         "types": ["vite/client"],
         "jsx": "react-jsx",
         "isolatedModules": true,
-        "skipLibCheck": true
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./src/renderer/src/*"]
+        }
     },
     "include": ["src/renderer/src/**/*", "src/shared/**/*"]
 }

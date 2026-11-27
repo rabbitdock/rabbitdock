@@ -1,4 +1,6 @@
+import { cn } from 'cn'
 import { use, useState } from 'react'
+import { Button } from '@/components/ui/button'
 import { installedModules } from './modules'
 import { ModuleView } from './ModuleView'
 
@@ -18,14 +20,14 @@ export function App() {
                                 const current = module.id === selectedId
                                 return (
                                     <li key={module.id}>
-                                        <button
-                                            type="button"
-                                            className={`w-full rounded-md px-2 py-1.5 text-left outline-none focus-visible:ring-2 focus-visible:ring-ring ${current ? 'bg-selection font-medium' : 'hover:bg-accent'}`}
+                                        <Button
+                                            variant="ghost"
+                                            className={cn('w-full justify-start px-2 font-normal', current && 'bg-selection font-medium hover:bg-selection')}
                                             aria-current={current ? 'page' : undefined}
                                             onClick={() => setSelectedId(module.id)}
                                         >
                                             {module.name}
-                                        </button>
+                                        </Button>
                                     </li>
                                 )
                             })}

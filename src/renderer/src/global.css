@@ -14,4 +14,14 @@
     body {
         @apply bg-background text-sm text-foreground;
     }
+
+    /* Base UI would add this rule in an inline <style> tag, which the Content-Security-Policy
+       blocks, so it comes from here instead. See the CSPProvider in main.tsx. */
+    .base-ui-disable-scrollbar {
+        scrollbar-width: none;
+    }
+
+    .base-ui-disable-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 }

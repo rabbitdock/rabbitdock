@@ -38,7 +38,8 @@ the packaged app, set `RABBITDOCK_EXECUTABLE` to its executable, such as
 
 ## Stack
 
-Electron, React and TypeScript, built with electron-vite and styled with Tailwind CSS.
+Electron, React and TypeScript, built with electron-vite and styled with Tailwind CSS, with
+components from shadcn/ui on Base UI.
 
 ## License
 

@@ -1,7 +1,10 @@
 /* The app's theme. Components use these semantic tokens through Tailwind classes such as
    bg-background and text-muted-foreground, and the dark values follow the system theme. The
    text colors are the brand's mono colors and the steel blue is the rabbit color, both from
-   brand/README.md. The grays around them were picked to match. */
+   brand/README.md. The grays around them were picked to match.
+
+   When a shadcn/ui component is added, define here the tokens its classes use, for both themes.
+   The CLI does not add them, and Tailwind silently generates nothing for a color it does not know. */
 
 /* Inter 4.1 from https://github.com/rsms/inter. Its license is in src/renderer/public, which Vite
    copies into the build, so it ships with the app as the license requires. */
