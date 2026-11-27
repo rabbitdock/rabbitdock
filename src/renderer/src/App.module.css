@@ -1,0 +1,28 @@
+.shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 100%;
+}
+
+.sidebar {
+    overflow-y: auto;
+    padding: 16px 12px;
+    background: var(--sidebar-background);
+    border-right: 1px solid var(--border);
+}
+
+.brand {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.content {
+    display: grid;
+    place-items: center;
+    overflow: auto;
+}
+
+.empty {
+    color: var(--text-muted);
+}

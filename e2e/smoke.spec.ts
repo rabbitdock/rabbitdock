@@ -21,13 +21,20 @@ function launchApp() {
     })
 }
 
-test('the app opens its window and renders the page', async () => {
+test('the app opens its window and renders the shell', async () => {
     const app = await launchApp()
     try {
         const window = await app.firstWindow()
         await expect(window).toHaveURL(APP_URL)
         await expect(window).toHaveTitle('RabbitDock')
         await expect(window.getByRole('heading', { name: 'RabbitDock' })).toBeVisible()
+
+        // Without the stylesheet the sidebar would sit above the content instead of beside it.
+        const sidebar = await window.getByRole('complementary').boundingBox()
+        const content = await window.getByRole('main').boundingBox()
+        expect(sidebar).not.toBeNull()
+        expect(content).not.toBeNull()
+        expect(sidebar!.x + sidebar!.width).toBeLessThanOrEqual(content!.x)
 
         // A resource the Content-Security-Policy blocks only shows up as a console error.
         const errors = (await window.consoleMessages()).filter((message) => message.type() === 'error')
