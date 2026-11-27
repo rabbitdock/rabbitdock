@@ -10,10 +10,11 @@ const APP_SCHEME = 'rabbitdock'
 const APP_HOST = 'app'
 export const APP_URL = `${APP_SCHEME}://${APP_HOST}/index.html`
 
-// Everything is denied except the app's own scripts and stylesheets. Loosen a directive only when a
-// feature needs it. It only applies to the built app, because the Vite dev server serves the page
-// in dev, so a resource it blocks shows up in `npm run preview` and fails the smoke test.
-const CONTENT_SECURITY_POLICY = "default-src 'none'; script-src 'self'; style-src 'self'; base-uri 'none'; form-action 'none'"
+// Everything is denied except the app's own scripts, stylesheets and fonts. Loosen a directive only
+// when a feature needs it. It only applies to the built app, because the Vite dev server serves the
+// page in dev, so a resource it blocks shows up in `npm run preview` and fails the smoke test.
+const CONTENT_SECURITY_POLICY =
+    "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'"
 
 // A module's code is served under the app's own origin, so the Content-Security-Policy treats it
 // as the app's and needs no exception for it.
